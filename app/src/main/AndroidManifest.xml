@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        The application icon is a plain PNG so tools that read it from the APK (e.g. Sauce Labs
+        app storage, aapt badging) can display it. The launcher activity overrides it with the
+        adaptive icon, which is what the phone's home screen / app drawer shows.
+    -->
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_legacy"
+        android:roundIcon="@mipmap/ic_launcher_legacy"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PawKnits">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.PawKnits">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
