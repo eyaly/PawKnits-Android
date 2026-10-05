@@ -1,0 +1,41 @@
+# PawKnits Android: build the APK and upload it to Sauce Labs storage (EU data center).
+# The test pipeline (project pytest-appium-demo) will be triggered when this pipeline finishes.
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md          # changing only the README doesn't rebuild the app
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: sauce-labs
+  - name: APK_PATH
+    value: app/build/outputs/apk/debug/PawKnits.apk
+
+steps:
+  - script: |
+      export JAVA_HOME=$(JAVA_HOME_17_X64)
+      ./gradlew assembleDebug --no-daemon
+    displayName: Build debug APK (Java 17)
+
+  - script: |
+      curl --fail-with-body -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" -X POST \
+        "https://api.eu-central-1.saucelabs.com/v1/storage/upload" \
+        -F "payload=@$(APK_PATH)" \
+        -F "name=PawKnits.apk" \
+        -F "description=Azure build $(Build.BuildNumber) from commit $(Build.SourceVersion)"
+    displayName: Upload APK to Sauce Labs storage (EU)
+    env:
+      SAUCE_USERNAME: $(SAUCE_USERNAME)
+      SAUCE_ACCESS_KEY: $(SAUCE_ACCESS_KEY)
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: $(APK_PATH)
+      artifact: apk
+    displayName: Publish APK as pipeline artifact
