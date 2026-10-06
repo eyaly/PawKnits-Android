@@ -25,6 +25,19 @@ for running on Sauce Labs real devices / emulators.
 No backend: nothing leaves the device and no real payment is made. The Pay button waits
 about 1.5 seconds and then approves or declines.
 
+## Network traffic
+Everything runs locally, but every login attempt also sends a small request so network
+capture has something to show:
+
+`POST https://httpbin.org/anything/pawknits/login` with body
+`{"event":"login","username":"doglover","success":true}` and an `X-App: PawKnits` header
+(the password is never sent).
+
+The app never waits for or depends on the request: if the device is offline it's logged
+(`adb logcat -s PawKnitsApi`) and ignored. The app trusts user-installed CA certificates
+(`res/xml/network_security_config.xml`), so HTTPS traffic can be decrypted by capture proxies.
+To capture it on Sauce Labs, add `"networkCapture": true` to `sauce:options`.
+
 ## Running on Sauce Labs
 Upload the APK to Sauce storage:
 ```bash
@@ -41,7 +54,7 @@ Appium capabilities:
   "appium:deviceName": "Google.*",
   "appium:appPackage": "com.pawknits.demo",
   "appium:appActivity": "com.pawknits.demo.MainActivity",
-  "sauce:options": { "name": "PawKnits demo", "appiumVersion": "latest" }
+  "sauce:options": { "name": "PawKnits demo", "appiumVersion": "latest", "networkCapture": true }
 }
 ```
 

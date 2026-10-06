@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Trust user-installed CA certificates in addition to system ones so HTTPS traffic can be
+    inspected by network-capture proxies (Sauce Labs network capture, Charles, mitmproxy).
+    Fine for a demo app; don't copy this into a production app.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
