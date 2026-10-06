@@ -44,7 +44,7 @@ class ShopViewModel : ViewModel() {
         val result = authenticate(username, password)
         if (result is LoginResult.Success) loggedInUser = username.trim().lowercase()
         // Demo network traffic only; login never waits for or depends on it.
-        viewModelScope.launch { DemoApi.reportLogin(username.trim().lowercase(), result is LoginResult.Success) }
+        viewModelScope.launch { DemoApi.reportLogin(username.trim().lowercase(), result.httpStatus) }
         return result
     }
 

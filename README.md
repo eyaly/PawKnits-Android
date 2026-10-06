@@ -27,10 +27,16 @@ about 1.5 seconds and then approves or declines.
 
 ## Network traffic
 Everything runs locally, but every login attempt also sends a small request so network
-capture has something to show:
+capture has something to show. The response status matches what a real login API would return:
 
-`POST https://httpbin.org/anything/pawknits/login` with body
-`{"event":"login","username":"doglover","success":true}` and an `X-App: PawKnits` header
+| Login result | Request | Status |
+|---|---|---|
+| Success | `POST https://httpbin.org/anything/pawknits/login` | 200 |
+| Empty username or password | `POST https://httpbin.org/status/400` | 400 |
+| Wrong username or password | `POST https://httpbin.org/status/401` | 401 |
+| Locked user (`locked`) | `POST https://httpbin.org/status/403` | 403 |
+
+Body: `{"event":"login","username":"doglover","success":true}`, header `X-App: PawKnits`
 (the password is never sent).
 
 The app never waits for or depends on the request: if the device is offline it's logged
