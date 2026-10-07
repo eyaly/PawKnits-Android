@@ -50,9 +50,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pawknits.demo.data.DemoAccounts
 import com.pawknits.demo.data.LoginResult
+import com.pawknits.demo.data.authenticate
+import com.pawknits.demo.ui.theme.PawKnitsTheme
 
 @Composable
 fun LoginScreen(onLogin: (String, String) -> LoginResult) {
@@ -190,4 +193,12 @@ private fun DemoAccountRow(user: String, note: String, tag: String, onPick: (Str
             .padding(vertical = 4.dp)
             .testTag(tag),
     )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun LoginScreenPreview() {
+    PawKnitsTheme {
+        LoginScreen(onLogin = ::authenticate)
+    }
 }
